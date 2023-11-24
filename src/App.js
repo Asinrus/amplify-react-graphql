@@ -51,8 +51,11 @@ const App = ({ signOut }) => {
       description: form.get("description"),
       image: image.name,
     };
-    if (!!data.image) uploadData(data.name, image);
-    await API.graphql({
+    if (!!data.image) uploadData({
+      key: data.name,
+      data: data.image
+    });
+    await API.graphql ({
       query: createNoteMutation,
       variables: { input: data },
     });
@@ -73,13 +76,8 @@ const App = ({ signOut }) => {
   return (
     <View className="App">
       <Heading level={1}>My Notes App</Heading>
-      <View
-  name="image"
-  as="input"
-  type="file"
-  style={{ alignSelf: "end" }}
-/>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
+      <View name="image" as="input" type="file" style={{ alignSelf: "end" }}/>
         <Flex direction="row" justifyContent="center">
           <TextField
             name="name"
